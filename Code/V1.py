@@ -12,8 +12,9 @@ def getdata(keyfile,PublicKey):
     pk=key.add_uid(uid,usage={KeyFlags.Sign, KeyFlags.EncryptCommunications, KeyFlags.EncryptStorage}, hashes=[HashAlgorithm.SHA256], ciphers=[SymmetricKeyAlgorithm.AES256])
     kf=open(keyfile,"wb")
     kf.write(bytes(key))
-    pkf=open(PublicKey,"wb")
-    pkf.write(bytes(key.pubkey))
+
+    pkf=open(PublicKey,"w")
+    pkf.write(str(key.pubkey))
     #print(key.pubkey)
 def get_key(name):
       key = pgpy.PGPKey.from_file("{}.asc".format(name))[0]
@@ -21,7 +22,7 @@ def get_key(name):
 
 i=input("New User?(Y/N)")
 if i=="Y" or i=="y":
-    getdata("PriKey.asc","Pubkey.asc")
+    getdata("PriKey.asc","Pubkey.txt")
 def encrypt(data, key="PriKey"):
     k = get_key(key)
     m = k.pubkey.encrypt(pgpy.PGPMessage.new(data), cipher=SymmetricKeyAlgorithm.AES256)
