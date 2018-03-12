@@ -10,6 +10,7 @@ makedir('Reciever')
 Rec=Path('Reciever/Reciever.asc')
 if not Rec.is_file():
     print("import Reciever PGP Key")
+
 #-----------------------ENCRYPTING DATA-----------------------------------
 print("Email data:")
 lin = []
@@ -21,11 +22,12 @@ while True:
         break
 d = '\n'.join(lin)
 
+
 print("Encrypting using Pubkey of Reciever")
 en=encrypt(d,'Reciever/Reciever')
 open('Reciever/Endata.asc','wb').write(en)
 #------------------------DONE---------------------------
-
+d=open('Reciever/Endata.asc','rb').read()
 #--------------------------FIGURE OUT SMTP PART-----------------------------------------
 
 usr=input("From:")
@@ -42,10 +44,17 @@ def send_email(user,pasw,recv,sub,body):
         server.ehlo()
         server.starttls()
         server.login(user, pasw)
-        server.sendmail(user,recv, message)
+        server.sendmail(user,recv,_message)
         server.close()
         print('successfully sent the mail')
     except:
-        print("failed to send mail")
+        print("Failed to send mail")
+send_email(usr,pswd,to,sub,bytes(open('Reciever/Endata.asc','rb').read()))
+#---------------------------------DONE---------------------------------
 
-send_email(usr,pswd,to,sub,str(open('Reciever/Endata.asc','rb').read()))
+
+#--------------------------------Figure retriving and decypting---------------------------
+
+d=open('Reciever/Endata.asc','rb').read()
+
+print(str(decrypt(d,'Reciever/Recieverkey')))
