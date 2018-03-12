@@ -4,7 +4,7 @@ from pgpy.constants import PubKeyAlgorithm, KeyFlags, HashAlgorithm, SymmetricKe
 def getdata(keyfile,PublicKey):
     name=str(input("Name:"))
     _email=str(input("EMail:"))
-
+    
 
     key = pgpy.PGPKey.new(PubKeyAlgorithm.RSAEncryptOrSign, 4096)
     uid = pgpy.PGPUID.new(name,email=_email)
