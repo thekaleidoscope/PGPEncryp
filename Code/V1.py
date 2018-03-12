@@ -13,26 +13,27 @@ def getdata(keyfile,PublicKey):
     kf=open(keyfile,"wb")
     kf.write(bytes(key))
 
-    pkf=open(PublicKey,"w")
-    pkf.write(str(key.pubkey))
+    pkf=open(PublicKey,"wb")
+    pkf.write(bytes(key.pubkey))
     #print(key.pubkey)
 def get_key(name):
       key = pgpy.PGPKey.from_file("{}.asc".format(name))[0]
       return key
-
+'''
 i=input("New User?(Y/N)")
 if i=="Y" or i=="y":
     getdata("PriKey.asc","Pubkey.txt")
-def encrypt(data, key="PriKey"):
+    '''
+def encrypt(data, key="PubKey"):
     k = get_key(key)
-    m = k.pubkey.encrypt(pgpy.PGPMessage.new(data), cipher=SymmetricKeyAlgorithm.AES256)
+    m = k.encrypt(pgpy.PGPMessage.new(data), cipher=SymmetricKeyAlgorithm.AES256)
     return bytes(m)
 
 def decrypt(data, key="PriKey"):
     k = get_key(key)
     m = k.decrypt(pgpy.PGPMessage.from_blob(data))
     return bytes(m._message.contents) if isinstance(m._message.contents, bytearray) else m._message.contents
-
+'''
 while(True):
     e=input("Encrypt(E)/Decrypt(D)")
 
@@ -58,3 +59,4 @@ while(True):
 
     if(input("Done(Y/N)")=="Y"):
         break
+'''
